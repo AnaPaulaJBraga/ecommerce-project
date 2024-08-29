@@ -1,0 +1,44 @@
+.home {
+  text-align: center;
+  padding: 20px;
+}
+
+.home-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+.home-featured-products {
+  margin-top: 20px;
+}
+
+.products-list {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.product-item {
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  width: 200px;
+  text-align: center;
+}
+
+.product-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.product-item h3 {
+  margin: 10px 0;
+}
+
+.product-item p {
+  color: #666;
+}
