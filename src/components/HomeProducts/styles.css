@@ -1,14 +1,3 @@
-.home {
-  text-align: center;
-  padding: 20px;
-}
-
-.home-header {
-  background-color: #282c34;
-  padding: 20px;
-  color: white;
-}
-
 .home-featured-products {
   margin-top: 20px;
 }
@@ -17,12 +6,11 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  align-items: flex-end;
 }
 
 .product-item {
   cursor: pointer;
-  border: 1px solid #ddd;
-  border-radius: 5px;
   padding: 10px;
   margin: 10px;
   width: 200px;

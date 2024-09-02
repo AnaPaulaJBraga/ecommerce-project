@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom'; // Importa o Link
 import './styles.css';
 import HomeProducts from '../HomeProducts/HomeProducts';
 import { FaShoppingCart } from 'react-icons/fa';
+import logo from '../../assets/LOGO_INFOWORD.png';
 
 const HomeContainer = () => {
   return (
     <div className="home">
       <header className="home-header">
-        <h1>Bem-vindo a nossa loja</h1>
-        <p>Encontre os melhores produtos de informática aqui!</p>
+        <img src={logo} alt="logo" className="logo" />
         <div className="auth-buttons">
           <Link to="/register" className="auth-button">
             Cadastro
