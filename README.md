@@ -2,8 +2,8 @@
 
 Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
 
-Git
-Node.js (versão 14 ou superior)
+- Git
+- Node.js (versão 14 ou superior)
 
 ## Instalação
 
@@ -11,7 +11,8 @@ Node.js (versão 14 ou superior)
    Primeiro, clone o repositório do projeto para a sua máquina local usando o Git:
 
 git clone git@github.com:AnaPaulaJBraga/ecommerce-project.git
-cd seu-projeto
+
+cd ecommerce-project
 
 2. Instalar Dependências
    Em seguida, instale as dependências do projeto. Você pode usar npm ou yarn:
