@@ -1,0 +1,95 @@
+/* Contêiner principal */
+.container {
+  max-width: 400px;
+  margin: 50px auto 0; /* Adiciona 50px de margem no topo */
+  padding: 30px;
+  border: 4px solid black; /* Borda preta */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: hsl(219, 46%, 73%);
+  text-align: center;
+}
+
+/* Estilo da imagem da logo */
+.container .logo {
+  max-width: 50%; /* Ajusta o tamanho conforme necessário */
+  height: auto;
+  margin-bottom: 25px;
+  border: 2px solid black; /* Borda preta para a logo */
+  border-radius: 0; /* Bordas quadradas */
+}
+
+/* Estilo da imagem */
+.container img {
+  max-width: 40%;
+  height: auto;
+  margin-bottom: 25px;
+}
+
+/* Estilo geral do formulário */
+form {
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid black; /* Borda preta */
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+/* Estilo dos rótulos dos campos */
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Estilo dos campos de entrada */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid black; /* Borda preta */
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Estilo para mensagens de erro */
+p {
+  color: #d9534f; /* Vermelho para erros */
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Estilo do botão de envio */
+button {
+  background-color: #5bc0de; /* Azul claro */
+  color: white;
+  border: 1px solid black; /* Borda preta */
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #65d531; /* Azul escuro ao passar o mouse */
+}
+
+/* Estilo para a mensagem de sucesso ou erro */
+.message {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid black; /* Borda preta */
+  border-radius: 4px;
+  text-align: center;
+}
+
+.message.success {
+  background-color: #dff0d8; /* Verde claro para sucesso */
+  color: #3c763d; /* Verde escuro */
+}
+
+.message.error {
+  background-color: #f2dede; /* Vermelho claro para erro */
+  color: #a94442; /* Vermelho escuro */
+}

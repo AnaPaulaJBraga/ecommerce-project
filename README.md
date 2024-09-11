@@ -32,6 +32,7 @@ O projeto estará disponível em http://localhost:3001.
 ## Contribuindo
 
 Se você deseja contribuir com o projeto, siga estas etapas:
+Se você deseja contribuir com o projeto, siga estas etapas:
 
 1. Clone o repositório
 2. Crie uma nova branch (git checkout -b feature/nova-funcionalidade)
