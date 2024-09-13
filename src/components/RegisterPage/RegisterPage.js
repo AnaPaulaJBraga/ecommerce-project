@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../../api';
 import './RegisterPage.css';
 import logoImage from '../../assets/LOGO_INFOWORD.png';
@@ -17,6 +18,7 @@ const RegisterPage = () => {
   });
 
   const [message, setMessage] = useState('');
+  const navigate = useNavigate(); // Hook para navegação
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,6 +61,9 @@ const RegisterPage = () => {
           },
         });
         setMessage('Cadastrado com sucesso!');
+        setTimeout(() => {
+          navigate('/login'); // Redireciona para a página de login após o sucesso
+        }, 1000); // Aguarda 1 segundo para mostrar a mensagem antes de redirecionar
       } catch (error) {
         setMessage('Erro ao cadastrar. Tente novamente.');
       }
