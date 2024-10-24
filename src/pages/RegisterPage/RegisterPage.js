@@ -18,7 +18,7 @@ const RegisterPage = () => {
   });
 
   const [message, setMessage] = useState('');
-  const navigate = useNavigate(); // Hook para navegação
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,10 +60,15 @@ const RegisterPage = () => {
             senha: formData.senha,
           },
         });
-        setMessage('Cadastrado com sucesso!');
+        await api.post('/login', {
+          email: formData.email,
+          senha: formData.senha,
+        });
+
+        setMessage('Cadastrado e logado com sucesso!');
         setTimeout(() => {
-          navigate('/login'); // Redireciona para a página de login após o sucesso
-        }, 1000); // Aguarda 1 segundo para mostrar a mensagem antes de redirecionar
+          navigate('/');
+        }, 2000);
       } catch (error) {
         setMessage('Erro ao cadastrar. Tente novamente.');
       }
