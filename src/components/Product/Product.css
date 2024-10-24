@@ -44,6 +44,7 @@
 .product-button button {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   width: fit-content;
   padding: 8px;
@@ -52,4 +53,5 @@
   color: white;
   background-color: #007bff;
   cursor: pointer;
+  margin: 10px;
 }

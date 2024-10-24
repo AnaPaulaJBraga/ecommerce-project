@@ -1,9 +1,9 @@
 import React from 'react';
 import './Product.css';
-import { MdShoppingCartCheckout } from 'react-icons/md';
+import { MdShoppingCartCheckout, MdAddLink } from 'react-icons/md';
 import PropTypes from 'prop-types';
 
-const Product = ({ item, addToCart }) => {
+const Product = ({ item, addToCart, seeDetails }) => {
   return (
     <li className="product-container">
       <img className="product-image" src={item.thumbnail} alt="" />
@@ -15,6 +15,9 @@ const Product = ({ item, addToCart }) => {
       <div className="product-button">
         <button onClick={() => addToCart(item)}>
           Adicionar ao Carrinho <MdShoppingCartCheckout />
+        </button>
+        <button onClick={() => seeDetails(item)}>
+          Ver detalhes <MdAddLink />
         </button>
       </div>
     </li>
@@ -30,4 +33,5 @@ Product.propTypes = {
     price: PropTypes.number.isRequired,
   }).isRequired,
   addToCart: PropTypes.func.isRequired,
+  seeDetails: PropTypes.func,
 };

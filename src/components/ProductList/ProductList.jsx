@@ -3,11 +3,16 @@ import Product from '../Product/Product';
 import './ProductList.css';
 import PropTypes from 'prop-types';
 
-const ProductList = ({ items, addToCart }) => {
+const ProductList = ({ items, addToCart, seeDetails }) => {
   return (
     <ul className="product-list">
       {items.map((item) => (
-        <Product key={item.id} item={item} addToCart={addToCart} />
+        <Product
+          key={item.id}
+          item={item}
+          addToCart={addToCart}
+          seeDetails={seeDetails}
+        />
       ))}
     </ul>
   );
@@ -22,4 +27,5 @@ ProductList.propTypes = {
     })
   ).isRequired,
   addToCart: PropTypes.func.isRequired,
+  seeDetails: PropTypes.func,
 };

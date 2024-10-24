@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import ProductList from '../ProductList/ProductList';
-import Cart from '../Cart/Cart';
+import { Link, useNavigate } from 'react-router-dom';
+import ProductList from '../../components/ProductList/ProductList';
+import Cart from '../../components/Cart/Cart';
 import logo from '../../assets/LOGO_INFOWORD.png';
 import './Home.css';
+import api from '../../api';
 
 const Home = () => {
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchProducts = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `https://api.mercadolibre.com/sites/MLB/search?q=iphone`
       );
       setItems(response.data.results);
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -25,6 +30,9 @@ const Home = () => {
     fetchProducts();
   }, []);
 
+  const seeDetails = (item) => {
+    navigate(`/product/${item.id}`);
+  };
   const addToCart = (item) => {
     setCart((prevCart) => [...prevCart, item]);
   };
@@ -49,8 +57,13 @@ const Home = () => {
         </div>
       </header>
       <section className="home-featured-products">
+        {loading && <p>Carregando...</p>}
         <div className="app">
-          <ProductList items={items} addToCart={addToCart} />
+          <ProductList
+            items={items}
+            addToCart={addToCart}
+            seeDetails={seeDetails}
+          />
         </div>
         <div>
           <Cart cart={cart} removeFromCart={removeFromCart} />
