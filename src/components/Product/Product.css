@@ -1,55 +1,55 @@
-.product-container{
-    display: flex;
-    flex-direction: column;
-    width: 280px;
-    align-items: center;
-    background: white;
-    justify-content: center;
+.product-container {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  align-items: center;
+  background: white;
+  justify-content: center;
 }
-.product-image{
-    width: 100%;
+.product-image {
+  width: 100%;
 }
-.product-info{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 280px;
-    overflow: hidden;
-    height: 60px;
-    border-top: solid 1px #d3d3d3;
-    padding: 10px;
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 280px;
+  overflow: hidden;
+  height: 60px;
+  border-top: solid 1px #d3d3d3;
+  padding: 10px;
 }
-.product-info .product-price{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    font-weight: 300;
-    color: #000;
+.product-info .product-price {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  color: #000;
 }
-.product-info .product-title{
-    font-size: 1rem;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 300;
-    color: #5f5f5f;
+.product-info .product-title {
+  font-size: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  color: #5f5f5f;
 }
-.product-button{
-    display: flex;
-    bottom: 10px;
-    max-width: 280px;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-    margin-bottom: 10px;
-    margin-top: 10px;
+.product-button {
+  display: flex;
+  bottom: 10px;
+  max-width: 280px;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
-.product-button button{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: fit-content;
-    padding: 8px;
-    border-radius: 8px;
-    border: none;
-    color: white;
-    background: blue;
-    cursor: pointer;
+.product-button button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  background-color: #007bff;
+  cursor: pointer;
 }
