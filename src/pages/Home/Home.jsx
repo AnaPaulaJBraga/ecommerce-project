@@ -15,10 +15,8 @@ const Home = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await api.get(
-        `https://api.mercadolibre.com/sites/MLB/search?q=iphone`
-      );
-      setItems(response.data.results);
+      const response = await api.get('/produtos');
+      setItems(response.data.dados);
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
     } finally {
@@ -30,9 +28,10 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  const seeDetails = (item) => {
+  const seeDetails = async (item) => {
     navigate(`/product/${item.id}`);
   };
+
   const addToCart = (item) => {
     setCart((prevCart) => [...prevCart, item]);
   };
@@ -53,6 +52,9 @@ const Home = () => {
           </Link>
           <Link to="/login" className="auth-button">
             Login
+          </Link>
+          <Link to="/admin" className="auth-button">
+            Admin
           </Link>
         </div>
       </header>
