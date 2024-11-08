@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../api';
+import './ProductPage.css';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -33,8 +34,8 @@ const ProductPage = () => {
     <div>
       <h1>{product.nome}</h1>
       <img height={300} src={product.url_foto} />
-      <p>Preço: {product.preco}</p>
-      <p>Descrição: {product.descricao}</p>
+      <p className="price">Preço: {product.preco}</p>
+      <p className="title">Descrição: {product.descricao}</p>
     </div>
   );
 };
