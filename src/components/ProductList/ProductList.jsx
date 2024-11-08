@@ -22,8 +22,8 @@ export default ProductList;
 ProductList.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      nome: PropTypes.string.isRequired,
     })
   ).isRequired,
   addToCart: PropTypes.func.isRequired,
