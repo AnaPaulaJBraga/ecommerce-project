@@ -27,7 +27,9 @@ Para iniciar o servidor de desenvolvimento e ver o projeto em execução, use:
 
 ### `npm start`
 
-O projeto estará disponível em http://localhost:3001.
+O projeto estará disponível em http://localhost:3001. 
+
+É necessário rodar também o backend (https://github.com/guilhermesouza23/ecommerce-api)
 
 ## Contribuindo
 
