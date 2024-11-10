@@ -4,10 +4,20 @@
   width: 280px;
   align-items: center;
   background: white;
-  justify-content: center;
+  justify-content: space-between;
+  height: 540px;
+  padding: 10px;
+  box-sizing: border-box;
+  margin: 10px;
 }
+
 .product-image {
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  object-fit: cover;
+  justify-content: center;
 }
 .product-info {
   display: flex;
@@ -34,7 +44,6 @@
 .product-button {
   display: flex;
   bottom: 10px;
-  max-width: 280px;
   align-items: center;
   justify-content: center;
   padding: 5px;
@@ -46,7 +55,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  width: fit-content;
   padding: 8px;
   border-radius: 8px;
   border: none;
@@ -54,4 +62,5 @@
   background-color: #007bff;
   cursor: pointer;
   margin: 10px;
+  height: 70px;
 }
