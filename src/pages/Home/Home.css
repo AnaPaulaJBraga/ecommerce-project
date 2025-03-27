@@ -18,22 +18,13 @@
   padding: 10px 20px;
   font-size: 16px;
   color: #fff;
-  background-color: #007bff;
+  background-color: #5bc0de;
   text-decoration: none;
   border-radius: 5px;
 }
 
 .auth-button:hover {
-  background-color: #0056b3;
-}
-
-.cart-button {
-  background-color: #28a745;
-  border: 1px solid #1e7e34;
-}
-
-.cart-button:hover {
-  background-color: #1e7e34;
+  background-color: #4caeeb;
 }
 
 .logo {
@@ -46,4 +37,23 @@
   justify-content: space-between;
   margin-top: 20px;
   padding: 0 20px;
+}
+.cart-button {
+  background-color: #5bc0de;
+  color: white;
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cart-button:hover {
+  background-color: #4caeeb;
+}
+
+.cart-container {
+  margin-top: 20px;
 }

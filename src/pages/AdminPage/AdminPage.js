@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from '../../api';
+import './AdminPage.css';
 
 const produtos = [
   {
@@ -89,56 +90,71 @@ const AdminPage = () => {
   };
 
   return (
-    <div>
-      <h1>Administração de Produtos</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nome:</label>
+    <div className="admin-container">
+      <h1 className="admin-title">Administração de Produtos</h1>
+      <form onSubmit={handleSubmit} className="product-form">
+        <div className="form-group">
+          <label htmlFor="nome" className="form-label">
+            Nome:
+          </label>
           <input
             type="text"
             name="nome"
+            id="nome"
+            className="form-input"
             value={product.nome}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
-          <label>Preço:</label>
+        <div className="form-group">
+          <label htmlFor="preco" className="form-label">
+            Preço:
+          </label>
           <input
             type="number"
             step="0.01"
             name="preco"
+            id="preco"
+            className="form-input"
             value={product.preco}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
-          <label>Descrição:</label>
+        <div className="form-group">
+          <label htmlFor="descricao" className="form-label">
+            Descrição:
+          </label>
           <input
             type="text"
             name="descricao"
+            id="descricao"
+            className="form-input"
             value={product.descricao}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
-          <label>URL da Foto:</label>
+        <div className="form-group">
+          <label htmlFor="url_foto" className="form-label">
+            URL da Foto:
+          </label>
           <input
             type="text"
             name="url_foto"
+            id="url_foto"
+            className="form-input"
             value={product.url_foto}
             onChange={handleChange}
             required
           />
         </div>
-        <button type="submit">Cadastrar Produto</button>
+        <button type="submit" className="submit-button">
+          Cadastrar Produto
+        </button>
       </form>
-      <button
-        onClick={seedProdutos}
-        style={{ marginTop: '20px', backgroundColor: 'red' }}
-      >
+      <button onClick={seedProdutos} className="default-product-button">
         Cadastrar Produtos Padrão
       </button>
     </div>

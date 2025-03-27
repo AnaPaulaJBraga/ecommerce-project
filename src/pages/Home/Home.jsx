@@ -11,6 +11,7 @@ const Home = () => {
   const [items, setItems] = useState([]);
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [cartVisible, setCartVisible] = useState(false);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -41,6 +42,9 @@ const Home = () => {
       prevCart.filter((item) => item.id !== itemToRemove.id)
     );
   };
+  const toggleCartVisibility = () => {
+    setCartVisible((prevState) => !prevState);
+  };
 
   return (
     <div className="home">
@@ -56,6 +60,9 @@ const Home = () => {
           <Link to="/admin" className="auth-button">
             Admin
           </Link>
+          <button onClick={toggleCartVisibility} className="cart-button">
+            Carrinho ({cart.length})
+          </button>
         </div>
       </header>
       <section className="home-featured-products">
@@ -67,9 +74,11 @@ const Home = () => {
             seeDetails={seeDetails}
           />
         </div>
-        <div>
-          <Cart cart={cart} removeFromCart={removeFromCart} />
-        </div>
+        {cartVisible && (
+          <div className="cart-container">
+            <Cart cart={cart} removeFromCart={removeFromCart} />
+          </div>
+        )}
       </section>
     </div>
   );
