@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Corrigido: um único import
 import api from '../../api';
-import logo from '../../assets/LOGO_INFOWORD.png';
 import './ProductPage.css';
+import Footer from '../../components/Footer/Footer'; // Importando o Footer
+import Header from '../../components/Header/Header'; // Importando o Header
+
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -35,7 +37,14 @@ const ProductPage = () => {
   return (
     <div className="productPage">
       <header className="home-header">
-        <img src={logo} alt="logo" className="logo" />
+        <Header
+            searchTerm={''}
+            onSearch={() => {}}
+            onLogoClick={() => {
+              navigate('/', { replace: true });
+              fetchProduct(id);
+            }}
+        />
       </header>
       <div className="productContainer">
         <div className="image-container">
@@ -49,6 +58,9 @@ const ProductPage = () => {
             Voltar
           </button>
         </div>
+      </div>
+      <div className="footer">
+        <Footer />
       </div>
     </div>
   );

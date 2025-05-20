@@ -1,49 +1,102 @@
+/* GLOBAL FIXES */
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* evita rolagem lateral */
+}
+
 .home {
+  background-color: #f8f9fa;
+  width: 100%;
+}
+
+/* BANNER */
+.home-banner {
+  background: linear-gradient(135deg, #007bff 0%, #00bfff 100%);
+  color: white;
   text-align: center;
-  padding: 20px;
+  padding: 60px 20px;
+  margin-bottom: 30px;
 }
 
-.home-header {
-  padding: 20px;
+.banner-text {
+  color: white;
 }
 
-.auth-buttons {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-.auth-button {
-  display: inline-block;
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #007bff;
-  text-decoration: none;
-  border-radius: 5px;
+.banner-text h1,
+.banner-text p {
+  color: inherit;
+  margin: 10px 0;
 }
 
-.auth-button:hover {
-  background-color: #0056b3;
+.banner-text p {
+  opacity: 0.9;
+  font-size: 1.1rem;
 }
 
-.cart-button {
-  background-color: #28a745;
-  border: 1px solid #1e7e34;
-}
-
-.cart-button:hover {
-  background-color: #1e7e34;
-}
-
-.logo {
-  width: 400px;
-  height: auto;
-}
-
+/* PRODUTOS E CARRINHO */
 .home-featured-products {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
   margin-top: 20px;
   padding: 0 20px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.app {
+  flex: 3;
+  min-width: 0;
+}
+
+.cart {
+  flex: 1;
+  min-width: 250px;
+  max-width: 100%;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+  .home-featured-products {
+    flex-direction: column;
+    padding: 0 10px;
+  }
+
+  .app, .cart {
+    width: 100%;
+  }
+}
+
+.home-banner {
+  background: linear-gradient(135deg, #007bff 0%, #00bfff 100%);
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.banner-logo {
+  width: 500px;
+  height: auto;
+  margin-bottom: 20px;
+  filter: brightness(0) invert(1); /* Transforma a logo em branco */
+  transition: transform 0.3s ease;
+}
+
+.banner-logo:hover {
+  transform: scale(1.05);
 }
