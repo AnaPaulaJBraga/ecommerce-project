@@ -1,16 +1,30 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import './Header.css';
 import logo from '../../assets/LOGO_INFOWORD.png';
 
-const Header = ({ searchTerm, onSearch, onLogoClick }) => {
+const Header = ({ searchTerm, onSearch, onLogoClick, items = [], onSelectSuggestion }) => {
   const navigate = useNavigate();
+  const searchRef = useRef();
 
   const handleLogoClick = () => {
     onLogoClick();
     navigate('/', { replace: true });
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        onSearch(''); // limpa o campo de busca ao clicar fora
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [searchRef, onSearch]);
 
   return (
     <header className="home-header">
@@ -18,7 +32,7 @@ const Header = ({ searchTerm, onSearch, onLogoClick }) => {
         <img src={logo} alt="logo" className="logo" />
       </div>
 
-      <div className="header-center">
+      <div className="header-center" ref={searchRef}>
         <div className="search-container">
           <input
             type="text"
@@ -28,6 +42,25 @@ const Header = ({ searchTerm, onSearch, onLogoClick }) => {
             onChange={(e) => onSearch(e.target.value)}
           />
           <FaSearch className="search-icon" />
+
+          {searchTerm && items.length > 0 && (
+            <ul className="suggestions-dropdown">
+              {items.map((item) => (
+                <li
+                  key={item.id}
+                  className="suggestion-item"
+                  onClick={() => onSelectSuggestion(item)}
+                >
+                  <img
+  src={item.imagem || 'https://via.placeholder.com/40'}
+  alt={item.nome}
+  className="suggestion-img"
+/>
+                  <span className="suggestion-name">{item.nome}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 

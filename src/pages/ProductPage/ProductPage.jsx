@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Corrigido: um único import
+import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../api';
 import './ProductPage.css';
-import Footer from '../../components/Footer/Footer'; // Importando o Footer
-import Header from '../../components/Header/Header'; // Importando o Header
-
+import Footer from '../../components/Footer/Footer';
+import Header from '../../components/Header/Header';
 
 const ProductPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // Inicializar o hook navigate
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,16 +35,12 @@ const ProductPage = () => {
 
   return (
     <div className="productPage">
-      <header className="home-header">
-        <Header
-            searchTerm={''}
-            onSearch={() => {}}
-            onLogoClick={() => {
-              navigate('/', { replace: true });
-              fetchProduct(id);
-            }}
-        />
-      </header>
+      <Header
+        searchTerm=""
+        onSearch={() => {}}
+        onLogoClick={() => navigate('/', { replace: true })}
+      />
+
       <div className="productContainer">
         <div className="image-container">
           <img className="image" src={product.url_foto} alt={product.nome} />
@@ -59,9 +54,8 @@ const ProductPage = () => {
           </button>
         </div>
       </div>
-      <div className="footer">
-        <Footer />
-      </div>
+
+      <Footer />
     </div>
   );
 };

@@ -64,39 +64,42 @@ const Home = () => {
     setCart(prev => prev.filter(item => item.id !== itemToRemove.id));
   };
 
-  return (
-    <Layout
-      searchTerm={searchTerm}
-      onSearch={handleSearch}
-      onLogoClick={handleLogoClick}
-    >
-      <div className="home">
-        <div className="home-banner">
-          <div className="banner-content">
-            <img src={logo} alt="Logo InfoWord" className="banner-logo" />
-            <div className="banner-text">
-              <h1>Bem-vindo à InfoWord</h1>
-              <p>Tecnologia e qualidade para você</p>
-            </div>
+return (
+  <Layout
+    searchTerm={searchTerm}
+    onSearch={handleSearch}
+    onLogoClick={handleLogoClick}
+    items={filteredItems}
+    onSelectSuggestion={seeDetails}
+  >
+    <div className="home">
+      <div className="home-banner">
+        <div className="banner-content">
+          <img src={logo} alt="Logo InfoWord" className="banner-logo" />
+          <div className="banner-text">
+            <h1>Bem-vindo à InfoWord</h1>
+            <p>Tecnologia e qualidade para você</p>
           </div>
         </div>
-
-        <section className="home-featured-products">
-          {loading && <p>Carregando...</p>}
-          <div className="app">
-            <ProductList
-              items={filteredItems}
-              addToCart={addToCart}
-              seeDetails={seeDetails}
-            />
-          </div>
-          <div className="cart">
-            <Cart cart={cart} removeFromCart={removeFromCart} />
-          </div>
-        </section>
       </div>
-    </Layout>
-  );
+
+      <section className="home-featured-products">
+        {loading && <p>Carregando...</p>}
+        <div className="app">
+          <ProductList
+            items={filteredItems}
+            addToCart={addToCart}
+            seeDetails={seeDetails}
+          />
+        </div>
+        <div className="cart">
+          <Cart cart={cart} removeFromCart={removeFromCart} />
+        </div>
+      </section>
+    </div>
+  </Layout>
+);
+
 };
 
 export default Home;
