@@ -35,11 +35,7 @@ const ProductPage = () => {
 
   return (
     <div className="productPage">
-      <Header
-        searchTerm=""
-        onSearch={() => {}}
-        onLogoClick={() => navigate('/', { replace: true })}
-      />
+<Header onLogoClick={() => navigate('/', { replace: true })} />
 
       <div className="productContainer">
         <div className="image-container">
