@@ -1,12 +1,12 @@
-/* GLOBAL FIXES */
 * {
   box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* evita rolagem lateral */
+  overflow-x: hidden;
 }
 
 .home {
@@ -14,7 +14,6 @@ body, html {
   width: 100%;
 }
 
-/* BANNER */
 .home-banner {
   background: linear-gradient(135deg, #007bff 0%, #00bfff 100%);
   color: white;
@@ -38,7 +37,6 @@ body, html {
   font-size: 1.1rem;
 }
 
-/* PRODUTOS E CARRINHO */
 .home-featured-products {
   display: flex;
   flex-wrap: wrap;
@@ -60,14 +58,14 @@ body, html {
   max-width: 100%;
 }
 
-/* RESPONSIVIDADE */
 @media (max-width: 768px) {
   .home-featured-products {
     flex-direction: column;
     padding: 0 10px;
   }
 
-  .app, .cart {
+  .app,
+  .cart {
     width: 100%;
   }
 }
@@ -93,7 +91,7 @@ body, html {
   width: 500px;
   height: auto;
   margin-bottom: 20px;
-  filter: brightness(0) invert(1); /* Transforma a logo em branco */
+  filter: brightness(0) invert(1);
   transition: transform 0.3s ease;
 }
 
