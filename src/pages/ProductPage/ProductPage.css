@@ -1,83 +1,91 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 .productPage {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin: auto;
-  padding: 20px;
+  min-height: 100vh;
   background-color: #f9f9f9;
-  border-radius: 10px;
 }
 
 .productContainer {
+  flex: 1; /* Isso faz o conteúdo ocupar o espaço restante entre header e footer */
   display: flex;
-  align-items: flex-start;
-  gap: 30px;
-  max-width: 2000px; /* Tamanho máximo do container */
-  max-height: 1200px; /* Tamanho máximo do container */
-  margin: 20px;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px auto;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  max-width: 1000px;
   background-color: #fff;
+  border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+@media (min-width: 768px) {
+  .productContainer {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 40px;
+  }
+}
+
+.image-container {
+  flex: 1;
+  max-width: 400px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 20px;
 }
 
 .image {
   max-width: 100%;
-  max-height: 400px; /* Tamanho máximo da imagem */
-  object-fit: contain; /* Garante que a imagem não seja cortada */
-}
-
-.image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 400px; 
-  height: 400px; 
-  overflow: hidden; 
-  padding: 40px;
-  margin: 20px;
-}
-
-.image-container img {
-  max-width: 100%;
   max-height: 100%;
-  object-fit: contain; /* Ajusta a imagem para caber no container sem distorcer */
+  object-fit: contain;
 }
 
 .details {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  margin: 80px;
+  justify-content: center;
+  padding: 20px;
 }
 
 .title {
-  font-size: 38px; /* Tamanho da fonte */
-  color: black; /* Cor preta para o título */
-  margin-bottom: 50px;
+  font-size: 32px;
+  color: #222;
+  margin-bottom: 20px;
 }
 
 .price {
-  font-size: 22px; /* Tamanho da fonte */
-  color: black; /* Cor preta para o preço */
-  margin-bottom: 100px;
+  font-size: 24px;
+  color: #444;
+  margin-bottom: 20px;
 }
 
 .description {
-  font-size: 18px; /* Tamanho da fonte */
-  color: black; /* Cor preta para a descrição */
-  margin-bottom: 90px;
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 30px;
 }
 
 .back-button {
+  align-self: flex-start;
   background-color: #28a745;
   color: #fff;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  margin-top: auto;
+  transition: background-color 0.2s ease;
 }
 
 .back-button:hover {

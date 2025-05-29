@@ -105,6 +105,8 @@ const Home = () => {
       searchTerm={searchTerm}
       onSearch={handleSearch}
       onLogoClick={handleLogoClick}
+      items={filteredItems}
+      onSelectSuggestion={seeDetails}
     >
       <div className="home">
         <div className="home-banner">
