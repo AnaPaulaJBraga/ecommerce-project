@@ -3,7 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 import logo from '../../assets/LOGO_INFOWORD.png';
 
-const Header = ({ searchTerm, onSearch, onLogoClick, items = [], onSelectSuggestion }) => {
+const Header = ({
+  searchTerm,
+  onSearch,
+  onLogoClick,
+  items = [],
+  onSelectSuggestion,
+}) => {
   const navigate = useNavigate();
   const searchRef = useRef();
 
@@ -69,9 +75,18 @@ const Header = ({ searchTerm, onSearch, onLogoClick, items = [], onSelectSuggest
       )}
 
       <div className="header-right">
-        <Link to="/register" className="auth-button">Cadastro</Link>
-        <Link to="/login" className="auth-button">Login</Link>
-        <Link to="/admin" className="auth-button">Admin</Link>
+        <Link to="/register" className="auth-button">
+          Cadastro
+        </Link>
+        <Link to="/login" className="auth-button">
+          Login
+        </Link>
+        <Link to="/cart" className="auth-button">
+          Carrinho
+        </Link>
+        <Link to="/admin" className="auth-button">
+          Admin
+        </Link>
       </div>
     </header>
   );

@@ -64,3 +64,6 @@
   margin: 10px;
   height: 70px;
 }
+.product-button button:hover {
+  background-color: #2980b9;
+}
