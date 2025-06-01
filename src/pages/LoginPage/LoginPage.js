@@ -1,38 +1,25 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
 import './LoginPage.css';
-import logoImage from '../../assets/LOGO_INFOWORD.png';
+import logo from '../../assets/LOGO_INFOWORD.png';
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    senha: '',
-  });
-
-  const [errors, setErrors] = useState({
-    email: '',
-    senha: '',
-  });
-
+  const [formData, setFormData] = useState({ email: '', senha: '' });
+  const [errors, setErrors] = useState({ email: '', senha: '' });
   const [message, setMessage] = useState('');
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setErrors({
-      email: '',
-      senha: '',
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors({ email: '', senha: '' });
     setMessage('');
 
     let hasErrors = false;
@@ -47,14 +34,9 @@ const LoginPage = () => {
 
     if (!hasErrors) {
       try {
-        await api.post('/login', {
-          email: formData.email,
-          senha: formData.senha,
-        });
+        await api.post('/login', formData);
         setMessage('Login realizado com sucesso!');
-        setTimeout(() => {
-          navigate('/');
-        }, 2000);
+        setTimeout(() => navigate('/'), 2000);
       } catch (error) {
         setMessage('Erro ao fazer login. Verifique suas credenciais.');
       }
@@ -62,50 +44,44 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="container">
-      <img src={logoImage} alt="Logo InfoWord" />
+    <>
+      <Header />
+      <main className="login-wrapper">
+        <div className="login-box">
+          <img src={logo} alt="Logo InfoWord" className="login-logo" />
+          <h1>Entrar na sua conta</h1>
 
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Digite seu email"
-          />
-          {errors.email && <p>{errors.email}</p>}
+          <form className="login-form" onSubmit={handleSubmit}>
+            <input
+              type="email"
+              name="email"
+              placeholder="Digite seu e-mail"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            {errors.email && <p className="error-msg">{errors.email}</p>}
+
+            <input
+              type="password"
+              name="senha"
+              placeholder="Digite sua senha"
+              value={formData.senha}
+              onChange={handleChange}
+            />
+            {errors.senha && <p className="error-msg">{errors.senha}</p>}
+
+            <button type="submit">Entrar</button>
+          </form>
+
+          {message && (
+            <p className={`login-message ${message.includes('sucesso') ? 'success' : 'error'}`}>
+              {message}
+            </p>
+          )}
         </div>
-
-        <div>
-          <label htmlFor="senha">Senha:</label>
-          <input
-            type="password"
-            id="senha"
-            name="senha"
-            value={formData.senha}
-            onChange={handleChange}
-            placeholder="Digite sua senha"
-          />
-          {errors.senha && <p>{errors.senha}</p>}
-        </div>
-
-        <button type="submit">Entrar</button>
-      </form>
-
-      {message && (
-        <p
-          className={`message ${
-            message.includes('sucesso') ? 'success' : 'error'
-          }`}
-        >
-          {message}
-        </p>
-      )}
-    </div>
+      </main>
+      <Footer />
+    </>
   );
 };
 

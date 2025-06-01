@@ -1,5 +1,8 @@
+// src/pages/AdminPage/AdminPage.js
 import React, { useState } from 'react';
 import api from '../../api';
+import Header from '../../components/Header/Header';
+import './AdminPage.css';
 
 const produtos = [
   {
@@ -11,15 +14,13 @@ const produtos = [
   {
     nome: 'PC Gamer High-End',
     preco: 4999.99,
-    descricao:
-      'PC gamer com processador Intel i9, 32GB RAM, e placa gráfica RTX 3080.',
+    descricao: 'PC gamer com processador Intel i9, 32GB RAM, e placa gráfica RTX 3080.',
     url_foto: 'http://localhost:3000/imagens/PC-GAMER.png',
   },
   {
     nome: 'Teclado Mecânico RGB',
     preco: 156.79,
-    descricao:
-      'Teclado mecânico com switches azuis e iluminação RGB personalizável.',
+    descricao: 'Teclado mecânico com switches azuis e iluminação RGB personalizável.',
     url_foto: 'http://localhost:3000/imagens/TECLADO.png',
   },
   {
@@ -66,18 +67,12 @@ const AdminPage = () => {
 
   const cadastrarProduto = async (produto) => {
     try {
-      const response = await api.post('/produtos', {
+      await api.post('/produtos', {
         produto,
       });
-      console.log(
-        `Produto ${produto.nome} cadastrado com sucesso:`,
-        response.data
-      );
+      console.log(`Produto ${produto.nome} cadastrado com sucesso`);
     } catch (error) {
-      console.error(
-        `Erro ao cadastrar o produto ${produto.nome}:`,
-        error.message
-      );
+      console.error(`Erro ao cadastrar o produto ${produto.nome}:`, error.message);
     }
   };
 
@@ -89,10 +84,11 @@ const AdminPage = () => {
   };
 
   return (
-    <div>
-      <h1>Administração de Produtos</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <>
+      <Header />
+      <div className="admin-container">
+        <h1>Administração de Produtos</h1>
+        <form onSubmit={handleSubmit} className="admin-form">
           <label>Nome:</label>
           <input
             type="text"
@@ -101,8 +97,7 @@ const AdminPage = () => {
             onChange={handleChange}
             required
           />
-        </div>
-        <div>
+
           <label>Preço:</label>
           <input
             type="number"
@@ -112,8 +107,7 @@ const AdminPage = () => {
             onChange={handleChange}
             required
           />
-        </div>
-        <div>
+
           <label>Descrição:</label>
           <input
             type="text"
@@ -122,8 +116,7 @@ const AdminPage = () => {
             onChange={handleChange}
             required
           />
-        </div>
-        <div>
+
           <label>URL da Foto:</label>
           <input
             type="text"
@@ -132,16 +125,15 @@ const AdminPage = () => {
             onChange={handleChange}
             required
           />
-        </div>
-        <button type="submit">Cadastrar Produto</button>
-      </form>
-      <button
-        onClick={seedProdutos}
-        style={{ marginTop: '20px', backgroundColor: 'red' }}
-      >
-        Cadastrar Produtos Padrão
-      </button>
-    </div>
+
+          <button type="submit">Cadastrar Produto</button>
+        </form>
+
+        <button className="seed-button" onClick={seedProdutos}>
+          Cadastrar Produtos Padrão
+        </button>
+      </div>
+    </>
   );
 };
 
