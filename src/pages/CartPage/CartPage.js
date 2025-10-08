@@ -4,6 +4,7 @@ import { getFromStorage, saveToStorage } from '../../utils/storage';
 import './CartPage.css';
 import { useNavigate } from 'react-router-dom';
 import RigthHeader from '../../components/RigthHeader/RigthHeader';
+import PixQRCode from '../../components/PixQRCode';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -248,10 +249,7 @@ const CheckoutPage = () => {
               )}
 
               {paymentMethod === 'pix' && (
-                <p>
-                  O QR Code para pagamento via Pix será gerado após finalizar o
-                  pedido.
-                </p>
+                <PixQRCode payload={'bc8f852c-8701-4757-b001-87e9963637dc'} />
               )}
 
               <button type="submit" disabled={!isAddressComplete} color="">
