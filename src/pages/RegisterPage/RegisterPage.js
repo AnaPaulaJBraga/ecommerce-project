@@ -54,7 +54,7 @@ const RegisterPage = () => {
         setMessage('Cadastrado e logado com sucesso!');
         setTimeout(() => navigate('/'), 2000);
       } catch (error) {
-        setMessage('Erro ao cadastrar. Tente novamente.');
+        setMessage('Erro ao cadastrar. Tente novamente.', error);
       }
     }
   };
@@ -99,7 +99,9 @@ const RegisterPage = () => {
           </form>
 
           {message && (
-            <p className={`register-message ${message.includes('sucesso') ? 'success' : 'error'}`}>
+            <p
+              className={`register-message ${message.includes('sucesso') ? 'success' : 'error'}`}
+            >
               {message}
             </p>
           )}
