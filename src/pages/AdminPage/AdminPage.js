@@ -1,4 +1,3 @@
-// src/pages/AdminPage/AdminPage.js
 import React, { useState } from 'react';
 import api from '../../api';
 import Header from '../../components/Header/Header';
@@ -14,13 +13,15 @@ const produtos = [
   {
     nome: 'PC Gamer High-End',
     preco: 4999.99,
-    descricao: 'PC gamer com processador Intel i9, 32GB RAM, e placa gráfica RTX 3080.',
+    descricao:
+      'PC gamer com processador Intel i9, 32GB RAM, e placa gráfica RTX 3080.',
     url_foto: 'http://localhost:3000/imagens/PC-GAMER.png',
   },
   {
     nome: 'Teclado Mecânico RGB',
     preco: 156.79,
-    descricao: 'Teclado mecânico com switches azuis e iluminação RGB personalizável.',
+    descricao:
+      'Teclado mecânico com switches azuis e iluminação RGB personalizável.',
     url_foto: 'http://localhost:3000/imagens/TECLADO.png',
   },
   {
@@ -53,9 +54,7 @@ const AdminPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/produtos', {
-        produto: product,
-      });
+      const response = await api.post('/produtos', { produto: product });
       console.log(response.data);
       alert('Produto cadastrado com sucesso!');
       setProduct({ nome: '', preco: '', descricao: '', url_foto: '' });
@@ -67,12 +66,13 @@ const AdminPage = () => {
 
   const cadastrarProduto = async (produto) => {
     try {
-      await api.post('/produtos', {
-        produto,
-      });
+      await api.post('/produtos', { produto });
       console.log(`Produto ${produto.nome} cadastrado com sucesso`);
     } catch (error) {
-      console.error(`Erro ao cadastrar o produto ${produto.nome}:`, error.message);
+      console.error(
+        `Erro ao cadastrar o produto ${produto.nome}:`,
+        error.message
+      );
     }
   };
 
@@ -88,9 +88,11 @@ const AdminPage = () => {
       <Header />
       <div className="admin-container">
         <h1>Administração de Produtos</h1>
+
         <form onSubmit={handleSubmit} className="admin-form">
-          <label>Nome:</label>
+          <label htmlFor="nome">Nome:</label>
           <input
+            id="nome"
             type="text"
             name="nome"
             value={product.nome}
@@ -98,8 +100,9 @@ const AdminPage = () => {
             required
           />
 
-          <label>Preço:</label>
+          <label htmlFor="preco">Preço:</label>
           <input
+            id="preco"
             type="number"
             step="0.01"
             name="preco"
@@ -108,8 +111,9 @@ const AdminPage = () => {
             required
           />
 
-          <label>Descrição:</label>
+          <label htmlFor="descricao">Descrição:</label>
           <input
+            id="descricao"
             type="text"
             name="descricao"
             value={product.descricao}
@@ -117,8 +121,9 @@ const AdminPage = () => {
             required
           />
 
-          <label>URL da Foto:</label>
+          <label htmlFor="url_foto">URL da Foto:</label>
           <input
+            id="url_foto"
             type="text"
             name="url_foto"
             value={product.url_foto}
