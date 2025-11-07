@@ -16,7 +16,7 @@ const Product = ({ item, addToCart, seeDetails }) => {
         <button onClick={() => addToCart(item)}>
           Adicionar ao Carrinho <MdShoppingCartCheckout />
         </button>
-        <button onClick={() => seeDetails(item)}>
+        <button onClick={() => seeDetails && seeDetails(item)}>
           Ver detalhes <MdAddLink />
         </button>
       </div>
