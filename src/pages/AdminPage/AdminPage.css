@@ -1,74 +1,106 @@
 .admin-container {
   max-width: 800px;
   margin: 40px auto;
-  padding: 30px;
+  padding: 40px;
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.12);
 }
 
 .admin-container h1 {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
   font-size: 2rem;
-  color: #333;
+  color: #222;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+  display: inline-block;
 }
 
 .admin-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px;
 }
 
 .admin-form label {
-  font-weight: bold;
-  color: #444;
+  font-weight: 600;
+  color: #333;
 }
 
 .admin-form input {
-  padding: 10px;
+  padding: 12px;
   font-size: 1rem;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #ccc;
-  transition: border-color 0.3s;
+  transition: all 0.3s;
+  background-color: #fafafa;
 }
 
 .admin-form input:focus {
   border-color: #007bff;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
   outline: none;
 }
 
 .admin-form button[type="submit"] {
   background-color: #28a745;
   color: #fff;
-  padding: 12px;
-  font-size: 1rem;
+  padding: 14px;
+  font-size: 1.05rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
   margin-top: 10px;
 }
 
 .admin-form button[type="submit"]:hover {
   background-color: #218838;
+  transform: scale(1.03);
 }
 
 .seed-button {
-  margin-top: 30px;
-  padding: 12px 20px;
+  margin-top: 35px;
+  padding: 14px 20px;
   background-color: #dc3545;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   display: block;
   width: 100%;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .seed-button:hover {
   background-color: #c82333;
+  transform: scale(1.03);
+}
+
+/* 💡 Ajuste para telas pequenas */
+@media (max-width: 600px) {
+  .admin-container {
+    margin: 20px;
+    padding: 25px;
+  }
+
+  .admin-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .admin-form button[type="submit"],
+  .seed-button {
+    font-size: 0.95rem;
+    padding: 12px;
+  }
 }

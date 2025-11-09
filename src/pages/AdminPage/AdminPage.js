@@ -13,15 +13,13 @@ const produtos = [
   {
     nome: 'PC Gamer High-End',
     preco: 4999.99,
-    descricao:
-      'PC gamer com processador Intel i9, 32GB RAM, e placa gráfica RTX 3080.',
+    descricao: 'PC gamer com processador Intel i9, 32GB RAM, e placa gráfica RTX 3080.',
     url_foto: 'http://localhost:3000/imagens/PC-GAMER.png',
   },
   {
     nome: 'Teclado Mecânico RGB',
     preco: 156.79,
-    descricao:
-      'Teclado mecânico com switches azuis e iluminação RGB personalizável.',
+    descricao: 'Teclado mecânico com switches azuis e iluminação RGB personalizável.',
     url_foto: 'http://localhost:3000/imagens/TECLADO.png',
   },
   {
@@ -54,25 +52,22 @@ const AdminPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/produtos', { produto: product });
+      const response = await api.post('/produtos/', product);
       console.log(response.data);
-      alert('Produto cadastrado com sucesso!');
+      alert('✅ Produto cadastrado com sucesso!');
       setProduct({ nome: '', preco: '', descricao: '', url_foto: '' });
     } catch (error) {
       console.error('Erro ao cadastrar o produto:', error);
-      alert('Erro ao cadastrar o produto');
+      alert('❌ Erro ao cadastrar o produto');
     }
   };
 
   const cadastrarProduto = async (produto) => {
     try {
-      await api.post('/produtos', { produto });
-      console.log(`Produto ${produto.nome} cadastrado com sucesso`);
+      await api.post('/produtos/', produto);
+      console.log(`✅ Produto ${produto.nome} cadastrado com sucesso`);
     } catch (error) {
-      console.error(
-        `Erro ao cadastrar o produto ${produto.nome}:`,
-        error.message
-      );
+      console.error(`Erro ao cadastrar o produto ${produto.nome}:`, error.message);
     }
   };
 
@@ -80,7 +75,7 @@ const AdminPage = () => {
     for (const produto of produtos) {
       await cadastrarProduto(produto);
     }
-    alert('Todos os produtos foram cadastrados com sucesso!');
+    alert('🎉 Todos os produtos foram cadastrados com sucesso!');
   };
 
   return (

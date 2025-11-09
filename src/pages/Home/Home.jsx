@@ -27,9 +27,9 @@ const Home = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/produtos');
-      setItems(response.data.dados);
-      setFilteredItems(response.data.dados);
+      const response = await api.get('/produtos/');
+      setItems(response.data);
+      setFilteredItems(response.data);
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
     } finally {
@@ -121,13 +121,19 @@ const Home = () => {
 
         <section className="home-featured-products">
           {loading && <p>Carregando...</p>}
+
+          {!loading && filteredItems.length === 0 && (
+            <p className="no-products">Nenhum produto encontrado.</p>
+          )}
+
           <div className="app">
             <ProductList
-              items={filteredItems}
+              products={filteredItems}   
               addToCart={addToCartHome}
               seeDetails={seeDetails}
             />
           </div>
+
           {cart.length >= 1 && (
             <div className="cart">
               <Cart

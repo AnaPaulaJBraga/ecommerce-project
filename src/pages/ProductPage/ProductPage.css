@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -23,7 +24,6 @@ html, body {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 
 @media (min-width: 768px) {
   .productContainer {
@@ -90,4 +90,46 @@ html, body {
 
 .back-button:hover {
   background-color: #218838;
+}
+
+/* Barra de busca central */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 25px;
+  padding: 6px 14px;
+  width: 280px;
+  transition: 0.3s ease;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
+.search-bar:hover {
+  background-color: #f1f1f1;
+}
+
+.search-icon {
+  color: #007bff;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  color: #333;
+  width: 100%;
+}
+
+.search-bar input::placeholder {
+  color: #888;
+}
+
+/* Responsividade da barra de busca */
+@media (max-width: 768px) {
+  .search-bar {
+    width: 90%;
+  }
 }

@@ -7,39 +7,51 @@ import './LoginPage.css';
 import logo from '../../assets/LOGO_INFOWORD.png';
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({ email: '', senha: '' });
-  const [errors, setErrors] = useState({ email: '', senha: '' });
+  const [formData, setFormData] = useState({ username: '', password: '' });
+  const [errors, setErrors] = useState({ username: '', password: '' });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
+  // Atualiza campos de input
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Envia o formulário
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({ email: '', senha: '' });
+    setErrors({ username: '', password: '' });
     setMessage('');
 
     let hasErrors = false;
-    if (!formData.email) {
-      setErrors((prev) => ({ ...prev, email: 'Insira um email' }));
+    if (!formData.username) {
+      setErrors((prev) => ({ ...prev, username: 'Insira seu nome de usuário' }));
       hasErrors = true;
     }
-    if (!formData.senha) {
-      setErrors((prev) => ({ ...prev, senha: 'Insira uma senha' }));
+    if (!formData.password) {
+      setErrors((prev) => ({ ...prev, password: 'Insira sua senha' }));
       hasErrors = true;
     }
 
-    if (!hasErrors) {
-      try {
-        await api.post('/login', formData);
-        setMessage('Login realizado com sucesso!');
-        setTimeout(() => navigate('/'), 2000);
-      } catch (error) {
-        setMessage('Erro ao fazer login. Verifique suas credenciais.');
-      }
+    if (hasErrors) return;
+
+    try {
+      // Faz o login JWT no backend
+      const response = await api.post('/token/', {
+        username: formData.username,
+        password: formData.password,
+      });
+
+      // Salva os tokens localmente
+      localStorage.setItem('accessToken', response.data.access);
+      localStorage.setItem('refreshToken', response.data.refresh);
+
+      setMessage('Login realizado com sucesso!');
+      setTimeout(() => navigate('/'), 1500);
+    } catch (error) {
+      console.error('Erro no login:', error);
+      setMessage('Credenciais inválidas. Verifique e tente novamente.');
     }
   };
 
@@ -53,22 +65,22 @@ const LoginPage = () => {
 
           <form className="login-form" onSubmit={handleSubmit}>
             <input
-              type="email"
-              name="email"
-              placeholder="Digite seu e-mail"
-              value={formData.email}
+              type="text"
+              name="username"
+              placeholder="Nome de usuário"
+              value={formData.username}
               onChange={handleChange}
             />
-            {errors.email && <p className="error-msg">{errors.email}</p>}
+            {errors.username && <p className="error-msg">{errors.username}</p>}
 
             <input
               type="password"
-              name="senha"
+              name="password"
               placeholder="Digite sua senha"
-              value={formData.senha}
+              value={formData.password}
               onChange={handleChange}
             />
-            {errors.senha && <p className="error-msg">{errors.senha}</p>}
+            {errors.password && <p className="error-msg">{errors.password}</p>}
 
             <button type="submit">Entrar</button>
           </form>
