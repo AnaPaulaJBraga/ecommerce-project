@@ -1,44 +1,51 @@
+// src/api.js
 import axios from 'axios';
 
-// Base da sua API Django
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
+  baseURL: 'http://localhost:8000/api',
 });
 
-// Intercepta todas as requisições e adiciona o token JWT
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+// 🔹 Adiciona o token de acesso (se existir) em todas as requisições
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('access');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
-// Intercepta respostas e tenta renovar o token automaticamente se expirar
+// 🔹 Intercepta respostas com erro 401 (token expirado)
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // Verifica se o erro foi 401 (token expirado)
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    // Evita loop infinito
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+
       try {
-        const refreshToken = localStorage.getItem('refreshToken');
-        const res = await axios.post('http://127.0.0.1:8000/api/token/refresh/', {
-          refresh: refreshToken,
+        const refresh = localStorage.getItem('refresh');
+        if (!refresh) {
+          throw new Error('Sem token de refresh');
+        }
+
+        // Pede novo token ao backend
+        const response = await axios.post('http://localhost:8000/api/token/refresh/', {
+          refresh,
         });
-        localStorage.setItem('accessToken', res.data.access);
-        api.defaults.headers.common['Authorization'] = `Bearer ${res.data.access}`;
+
+        // Atualiza o token no localStorage
+        localStorage.setItem('access', response.data.access);
+
+        // Atualiza o header Authorization e refaz a requisição original
+        originalRequest.headers.Authorization = `Bearer ${response.data.access}`;
         return api(originalRequest);
       } catch (refreshError) {
-        console.error('Erro ao renovar token:', refreshError);
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
+        console.error('Erro ao renovar o token:', refreshError);
+        localStorage.removeItem('access');
+        localStorage.removeItem('refresh');
+        window.location.href = '/login'; // força logout
       }
     }
 
