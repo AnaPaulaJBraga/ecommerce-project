@@ -1,4 +1,3 @@
-// src/api.js
 import axios from 'axios';
 
 const api = axios.create({
@@ -7,7 +6,7 @@ const api = axios.create({
 
 // 🔹 Adiciona o token de acesso (se existir) em todas as requisições
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access');
+  const token = localStorage.getItem('token'); // <-- ajustado
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -20,12 +19,11 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Evita loop infinito
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const refresh = localStorage.getItem('refresh');
+        const refresh = localStorage.getItem('refreshToken'); // <-- ajustado
         if (!refresh) {
           throw new Error('Sem token de refresh');
         }
@@ -36,15 +34,15 @@ api.interceptors.response.use(
         });
 
         // Atualiza o token no localStorage
-        localStorage.setItem('access', response.data.access);
+        localStorage.setItem('token', response.data.access);
 
         // Atualiza o header Authorization e refaz a requisição original
         originalRequest.headers.Authorization = `Bearer ${response.data.access}`;
         return api(originalRequest);
       } catch (refreshError) {
         console.error('Erro ao renovar o token:', refreshError);
-        localStorage.removeItem('access');
-        localStorage.removeItem('refresh');
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
         window.location.href = '/login'; // força logout
       }
     }

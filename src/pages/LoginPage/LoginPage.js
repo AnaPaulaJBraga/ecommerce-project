@@ -43,12 +43,13 @@ const LoginPage = () => {
         password: formData.password,
       });
 
-      // Salva os tokens localmente
-      localStorage.setItem('accessToken', response.data.access);
-      localStorage.setItem('refreshToken', response.data.refresh);
+      // Salva o token de acesso e refresh no localStorage
+      localStorage.setItem('token', response.data.access);
+localStorage.setItem('refreshToken', response.data.refresh);
+
 
       setMessage('Login realizado com sucesso!');
-      setTimeout(() => navigate('/'), 1500);
+      setTimeout(() => navigate('/admin'), 1500); // redireciona ao painel admin
     } catch (error) {
       console.error('Erro no login:', error);
       setMessage('Credenciais inválidas. Verifique e tente novamente.');

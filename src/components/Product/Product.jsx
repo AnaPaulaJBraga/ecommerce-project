@@ -4,15 +4,15 @@ import { MdShoppingCartCheckout, MdAddLink } from 'react-icons/md';
 import PropTypes from 'prop-types';
 
 const Product = ({ item, addToCart, seeDetails }) => {
-  if (!item) return null; // Evita erros se item for undefined
+  if (!item) return null;
 
-  // Garante que o preço é um número antes de formatar
   const precoFormatado = item.preco
     ? `R$ ${parseFloat(item.preco).toFixed(2)}`
     : 'Preço indisponível';
 
-  // Garante que o campo imagem é tratado corretamente
-  let imagemSrc = '/placeholder.png';
+  // 🔥 CORRIGIDO: placeholder NÃO bloqueia imagem do backend
+  let imagemSrc = null;
+
   if (item.imagem) {
     if (item.imagem.startsWith('http')) {
       imagemSrc = item.imagem;
@@ -23,7 +23,12 @@ const Product = ({ item, addToCart, seeDetails }) => {
 
   return (
     <li className="product-container">
-      <img className="product-image" src={imagemSrc} alt={item.nome || 'Produto'} />
+      <img
+        className="product-image"
+        src={imagemSrc || "https://via.placeholder.com/300?text=Sem+Imagem"}
+        alt={item.nome || 'Produto'}
+      />
+
       <div className="product-info">
         <h2 className="product-price">{precoFormatado}</h2>
         <h2 className="product-title">{item.nome || 'Produto sem nome'}</h2>
@@ -33,6 +38,7 @@ const Product = ({ item, addToCart, seeDetails }) => {
         <button onClick={() => addToCart(item)}>
           Adicionar ao Carrinho <MdShoppingCartCheckout />
         </button>
+
         <button onClick={() => seeDetails && seeDetails(item)}>
           Ver detalhes <MdAddLink />
         </button>
