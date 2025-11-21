@@ -26,7 +26,10 @@ const LoginPage = () => {
 
     let hasErrors = false;
     if (!formData.username) {
-      setErrors((prev) => ({ ...prev, username: 'Insira seu nome de usuário' }));
+      setErrors((prev) => ({
+        ...prev,
+        username: 'Insira seu nome de usuário',
+      }));
       hasErrors = true;
     }
     if (!formData.password) {
@@ -45,11 +48,10 @@ const LoginPage = () => {
 
       // Salva o token de acesso e refresh no localStorage
       localStorage.setItem('token', response.data.access);
-localStorage.setItem('refreshToken', response.data.refresh);
-
+      localStorage.setItem('refreshToken', response.data.refresh);
 
       setMessage('Login realizado com sucesso!');
-      setTimeout(() => navigate('/admin'), 1500); // redireciona ao painel admin
+      setTimeout(() => navigate('/'), 1500);
     } catch (error) {
       console.error('Erro no login:', error);
       setMessage('Credenciais inválidas. Verifique e tente novamente.');
@@ -87,7 +89,9 @@ localStorage.setItem('refreshToken', response.data.refresh);
           </form>
 
           {message && (
-            <p className={`login-message ${message.includes('sucesso') ? 'success' : 'error'}`}>
+            <p
+              className={`login-message ${message.includes('sucesso') ? 'success' : 'error'}`}
+            >
               {message}
             </p>
           )}

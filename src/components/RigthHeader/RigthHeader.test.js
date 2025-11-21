@@ -11,11 +11,18 @@ jest.mock('react-router-dom', () => ({
 
 describe('RigthHeader component', () => {
   const mockOnLogoClick = jest.fn();
+  const mockOnSearch = jest.fn();
 
-  const renderComponent = (children = null) => {
+  const renderComponent = (children = null, props = {}) => {
     return render(
       <BrowserRouter>
-        <RigthHeader onLogoClick={mockOnLogoClick}>{children}</RigthHeader>
+        <RigthHeader
+          onLogoClick={mockOnLogoClick}
+          onSearch={mockOnSearch}
+          {...props}
+        >
+          {children}
+        </RigthHeader>
       </BrowserRouter>
     );
   };
@@ -41,20 +48,25 @@ describe('RigthHeader component', () => {
 
   it('chama onLogoClick ao clicar no logo', () => {
     renderComponent();
-
-    const logo = screen.getByAltText('logo');
-    fireEvent.click(logo);
+    fireEvent.click(screen.getByAltText('logo'));
 
     expect(mockOnLogoClick).toHaveBeenCalledTimes(1);
   });
 
   it('navega para "/" ao clicar no logo', () => {
     renderComponent();
-
-    const logo = screen.getByAltText('logo');
-    fireEvent.click(logo);
+    fireEvent.click(screen.getByAltText('logo'));
 
     expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
+  });
+
+  it('não quebra caso onLogoClick não seja fornecido', () => {
+    renderComponent(null, { onLogoClick: undefined });
+
+    fireEvent.click(screen.getByAltText('logo'));
+
+    // Se não quebrou, está ok
+    expect(true).toBe(true);
   });
 
   it('verifica se os links apontam para as rotas corretas', () => {
@@ -76,5 +88,36 @@ describe('RigthHeader component', () => {
       'href',
       '/admin'
     );
+  });
+
+  it('chama onSearch ao digitar na barra de pesquisa', () => {
+    renderComponent();
+
+    const input = screen.getByPlaceholderText('Buscar produtos...');
+
+    fireEvent.change(input, { target: { value: 'notebook' } });
+
+    expect(mockOnSearch).toHaveBeenCalledTimes(1);
+    expect(mockOnSearch).toHaveBeenCalledWith('notebook');
+  });
+
+  it('altera o state interno searchTerm ao digitar', () => {
+    renderComponent();
+
+    const input = screen.getByPlaceholderText('Buscar produtos...');
+
+    fireEvent.change(input, { target: { value: 'mouse' } });
+
+    expect(input.value).toBe('mouse');
+  });
+
+  it('não quebra caso onSearch não seja fornecido', () => {
+    renderComponent(null, { onSearch: undefined });
+
+    const input = screen.getByPlaceholderText('Buscar produtos...');
+
+    fireEvent.change(input, { target: { value: 'abc' } });
+
+    expect(true).toBe(true);
   });
 });

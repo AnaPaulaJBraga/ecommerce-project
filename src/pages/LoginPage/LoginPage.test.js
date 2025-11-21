@@ -31,9 +31,7 @@ describe('LoginPage', () => {
   it('renderiza o formulário corretamente', () => {
     renderPage();
 
-    expect(
-      screen.getByPlaceholderText(/Digite seu e-mail/i)
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Nome de usuário/i)).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText(/Digite sua senha/i)
     ).toBeInTheDocument();
@@ -41,24 +39,29 @@ describe('LoginPage', () => {
     expect(screen.getByAltText(/Logo InfoWord/i)).toBeInTheDocument();
   });
 
-  it('exibe erros quando campos estão vazios e o formulário é enviado', async () => {
+  it('exibe erros quando campos estão vazios ao enviar', async () => {
     renderPage();
 
     fireEvent.click(screen.getByRole('button', { name: /entrar/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/Insira um email/i)).toBeInTheDocument();
-      expect(screen.getByText(/Insira uma senha/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Insira seu nome de usuário/i)
+      ).toBeInTheDocument();
+      expect(screen.getByText(/Insira sua senha/i)).toBeInTheDocument();
     });
   });
 
   it('envia formulário com sucesso e navega', async () => {
-    api.post.mockResolvedValueOnce({ data: { token: 'abc123' } });
+    api.post.mockResolvedValueOnce({
+      data: { access: 'token123', refresh: 'refresh123' },
+    });
+
     renderPage();
 
     await userEvent.type(
-      screen.getByPlaceholderText(/Digite seu e-mail/i),
-      'test@example.com'
+      screen.getByPlaceholderText(/Nome de usuário/i),
+      'ana'
     );
     await userEvent.type(
       screen.getByPlaceholderText(/Digite sua senha/i),
@@ -67,25 +70,26 @@ describe('LoginPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /entrar/i }));
 
-    await waitFor(() => {
+    await waitFor(() =>
       expect(
         screen.getByText(/Login realizado com sucesso!/i)
-      ).toBeInTheDocument();
-    });
+      ).toBeInTheDocument()
+    );
 
-    // Espera o setTimeout antes da navegação
-    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/'), {
-      timeout: 2500,
+    // Espera o setTimeout de redirecionamento
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/');
     });
   });
 
   it('exibe mensagem de erro quando login falha', async () => {
-    api.post.mockRejectedValueOnce(new Error('Erro no login'));
+    api.post.mockRejectedValueOnce(new Error('login failed'));
+
     renderPage();
 
     await userEvent.type(
-      screen.getByPlaceholderText(/Digite seu e-mail/i),
-      'test@example.com'
+      screen.getByPlaceholderText(/Nome de usuário/i),
+      'ana'
     );
     await userEvent.type(
       screen.getByPlaceholderText(/Digite sua senha/i),
@@ -94,11 +98,11 @@ describe('LoginPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /entrar/i }));
 
-    await waitFor(() => {
+    await waitFor(() =>
       expect(
-        screen.getByText(/Erro ao fazer login. Verifique suas credenciais./i)
-      ).toBeInTheDocument();
-    });
+        screen.getByText(/Credenciais inválidas. Verifique e tente novamente./i)
+      ).toBeInTheDocument()
+    );
 
     expect(mockNavigate).not.toHaveBeenCalled();
   });
@@ -106,13 +110,13 @@ describe('LoginPage', () => {
   it('atualiza valores ao digitar nos inputs', async () => {
     renderPage();
 
-    const emailInput = screen.getByPlaceholderText(/Digite seu e-mail/i);
-    const senhaInput = screen.getByPlaceholderText(/Digite sua senha/i);
+    const userInput = screen.getByPlaceholderText(/Nome de usuário/i);
+    const passInput = screen.getByPlaceholderText(/Digite sua senha/i);
 
-    await userEvent.type(emailInput, 'novo@email.com');
-    await userEvent.type(senhaInput, '123456');
+    await userEvent.type(userInput, 'novoUser');
+    await userEvent.type(passInput, '123456');
 
-    expect(emailInput).toHaveValue('novo@email.com');
-    expect(senhaInput).toHaveValue('123456');
+    expect(userInput).toHaveValue('novoUser');
+    expect(passInput).toHaveValue('123456');
   });
 });

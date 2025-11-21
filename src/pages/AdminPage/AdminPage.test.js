@@ -1,128 +1,114 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import AdminPage from './AdminPage';
 import api from '../../api';
 
 jest.mock('../../api');
 
-const mockNavigate = jest.fn();
-
-jest.mock('react-router-dom', () => {
-  const original = jest.requireActual('react-router-dom');
-  return {
-    ...original,
-    useNavigate: () => mockNavigate,
-  };
-});
-
 describe('AdminPage', () => {
+  const renderComponent = (props = {}) =>
+    render(
+      <BrowserRouter>
+        <AdminPage {...props} />
+      </BrowserRouter>
+    );
+
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
   });
 
-  it('renderiza corretamente o formulário', () => {
-    render(
-      <MemoryRouter>
-        <AdminPage />
-      </MemoryRouter>
-    );
-
-    expect(screen.getByLabelText(/Nome/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Preço/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Descrição/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/URL da Foto/i)).toBeInTheDocument();
-  });
-
-  it('permite preencher os inputs', async () => {
-    render(
-      <MemoryRouter>
-        <AdminPage />
-      </MemoryRouter>
-    );
-
-    const nome = screen.getByLabelText(/Nome/i);
-    await userEvent.type(nome, 'Produto Teste');
-
-    expect(nome).toHaveValue('Produto Teste');
-  });
-
-  it('envia o formulário e chama api.post com os dados corretos', async () => {
-    api.post.mockResolvedValueOnce({ data: { sucesso: true } });
-
-    render(
-      <MemoryRouter>
-        <AdminPage />
-      </MemoryRouter>
-    );
-
-    await userEvent.type(screen.getByLabelText(/Nome/i), 'Cadeira Gamer');
-    await userEvent.type(screen.getByLabelText(/Preço/i), '399.99');
-    await userEvent.type(screen.getByLabelText(/Descrição/i), 'Teste desc');
-    await userEvent.type(
-      screen.getByLabelText(/URL da Foto/i),
-      'http://x.com/img.png'
-    );
-
-    fireEvent.click(
-      screen.getByRole('button', { name: /^Cadastrar Produto$/ })
-    );
-
-    await waitFor(() => {
-      expect(api.post).toHaveBeenCalledWith('/produtos', {
-        produto: {
-          nome: 'Cadeira Gamer',
-          preco: '399.99',
-          descricao: 'Teste desc',
-          url_foto: 'http://x.com/img.png',
-        },
-      });
+  const fillForm = () => {
+    fireEvent.change(screen.getByLabelText(/nome/i), {
+      target: { value: 'Produto Teste' },
     });
+
+    fireEvent.change(screen.getByLabelText(/preço/i), {
+      target: { value: '49.90' },
+    });
+
+    fireEvent.change(screen.getByLabelText(/descrição/i), {
+      target: { value: 'Descrição Teste' },
+    });
+
+    fireEvent.change(screen.getByLabelText(/url da foto/i), {
+      target: { value: 'http://example.com/img.png' },
+    });
+  };
+
+  const getSubmitButton = () =>
+    screen.getAllByRole('button', { name: /cadastrar produto/i })[0];
+
+  it('envia o formulário com os valores corretos', async () => {
+    api.post.mockResolvedValueOnce({
+      data: { message: 'Produto cadastrado com sucesso!' },
+    });
+
+    renderComponent();
+
+    fillForm();
+    fireEvent.click(getSubmitButton());
+
+    await waitFor(() =>
+      expect(api.post).toHaveBeenCalledWith('/produtos/', {
+        nome: 'Produto Teste',
+        preco: '49.90',
+        descricao: 'Descrição Teste',
+        url_foto: 'http://example.com/img.png',
+      })
+    );
   });
 
   it('exibe erro caso o cadastro falhe', async () => {
-    jest.spyOn(window, 'alert').mockImplementation(() => {});
     api.post.mockRejectedValueOnce(new Error('Erro API'));
 
-    render(
-      <MemoryRouter>
-        <AdminPage />
-      </MemoryRouter>
+    renderComponent();
+
+    fillForm();
+    fireEvent.click(getSubmitButton());
+
+    await waitFor(() =>
+      expect(window.alert).toHaveBeenCalledWith(
+        '❌ Erro ao cadastrar o produto'
+      )
     );
-
-    await userEvent.type(screen.getByLabelText(/Nome/i), 'X');
-    await userEvent.type(screen.getByLabelText(/Preço/i), '10');
-    await userEvent.type(screen.getByLabelText(/Descrição/i), 'Y');
-    await userEvent.type(screen.getByLabelText(/URL da Foto/i), 'Z');
-
-    fireEvent.click(
-      screen.getByRole('button', { name: /^Cadastrar Produto$/ })
-    );
-
-    await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith('Erro ao cadastrar o produto');
-    });
   });
 
-  it('seedProdutos: deve chamar cadastrarProduto para todos os produtos', async () => {
-    jest.spyOn(window, 'alert').mockImplementation(() => {});
+  it('seedProdutos – usa seedList mockada e chama api.post para cada item', async () => {
+    const mockSeed = [
+      {
+        nome: 'P1',
+        preco: 1.1,
+        descricao: 'd1',
+        url_foto: 'http://ok/img1.png',
+      },
+      {
+        nome: 'P2',
+        preco: 2.2,
+        descricao: 'd2',
+        url_foto: 'http://ok/img2.png',
+      },
+    ];
+
     api.post.mockResolvedValue({});
 
-    render(
-      <MemoryRouter>
-        <AdminPage />
-      </MemoryRouter>
+    renderComponent({ seedList: mockSeed });
+
+    const seedButton = screen.getByRole('button', {
+      name: /cadastrar produtos padrão/i,
+    });
+    fireEvent.click(seedButton);
+
+    await waitFor(() =>
+      expect(api.post).toHaveBeenCalledTimes(mockSeed.length)
     );
 
-    const btn = screen.getByRole('button', {
-      name: /Cadastrar Produtos Padrão/i,
-    });
+    expect(api.post).toHaveBeenCalledWith('/produtos/', mockSeed[0]);
+    expect(api.post).toHaveBeenCalledWith('/produtos/', mockSeed[1]);
 
-    fireEvent.click(btn);
-
-    await waitFor(() => {
-      expect(api.post).toHaveBeenCalledTimes(5);
-    });
+    expect(window.alert).toHaveBeenCalledWith(
+      '🎉 Todos os produtos foram cadastrados com sucesso!'
+    );
   });
 });

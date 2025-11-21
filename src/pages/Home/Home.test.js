@@ -7,13 +7,13 @@ import api from '../../api';
 import { saveToStorage, getFromStorage } from '../../utils/storage';
 
 jest.mock('../../api');
+
 jest.mock('../../utils/storage', () => ({
   saveToStorage: jest.fn(),
   getFromStorage: jest.fn(),
 }));
 
 const mockNavigate = jest.fn();
-
 jest.mock('react-router-dom', () => {
   const original = jest.requireActual('react-router-dom');
   return {
@@ -25,9 +25,9 @@ jest.mock('react-router-dom', () => {
 jest.mock(
   '../../components/ProductList/ProductList',
   () =>
-    ({ items, addToCart, seeDetails }) => (
+    ({ products, addToCart, seeDetails }) => (
       <div>
-        {items.map((i) => (
+        {products.map((i) => (
           <div key={i.id} data-testid="product-item">
             {i.nome}
             <button onClick={() => addToCart(i)}>add</button>
@@ -69,7 +69,7 @@ describe('Home Page', () => {
 
   it('carrega produtos ao montar', async () => {
     api.get.mockResolvedValueOnce({
-      data: { dados: [{ id: 1, nome: 'Mouse' }] },
+      data: [{ id: 1, nome: 'Mouse' }],
     });
 
     renderHome();
@@ -78,26 +78,26 @@ describe('Home Page', () => {
       expect(screen.getByText('Mouse')).toBeInTheDocument();
     });
 
-    expect(api.get).toHaveBeenCalledWith('/produtos');
+    expect(api.get).toHaveBeenCalledWith('/produtos/');
   });
 
   it('busca e filtra produtos', async () => {
     api.get.mockResolvedValueOnce({
-      data: {
-        dados: [
-          { id: 1, nome: 'Teclado Gamer' },
-          { id: 2, nome: 'Mouse' },
-        ],
-      },
+      data: [
+        { id: 1, nome: 'Teclado Gamer' },
+        { id: 2, nome: 'Mouse' },
+      ],
     });
 
     renderHome();
 
-    await waitFor(() => {
-      expect(screen.getAllByTestId('product-item')).toHaveLength(2);
-    });
+    await waitFor(() =>
+      expect(screen.getAllByTestId('product-item')).toHaveLength(2)
+    );
 
-    await userEvent.type(screen.getByPlaceholderText(/buscar/i), 'mouse');
+    // Mock do campo de busca vindo do Layout
+    const input = screen.getByRole('textbox');
+    await userEvent.type(input, 'mouse');
 
     await waitFor(() => {
       const results = screen.getAllByTestId('product-item');
@@ -108,13 +108,14 @@ describe('Home Page', () => {
 
   it('retorna lista vazia ao buscar termo inexistente', async () => {
     api.get.mockResolvedValueOnce({
-      data: { dados: [{ id: 1, nome: 'Monitor' }] },
+      data: [{ id: 1, nome: 'Monitor' }],
     });
 
     renderHome();
     await waitFor(() => screen.getByText('Monitor'));
 
-    await userEvent.type(screen.getByPlaceholderText(/buscar/i), 'abcxyz');
+    const input = screen.getByRole('textbox');
+    await userEvent.type(input, 'abcxyz');
 
     await waitFor(() => {
       expect(screen.queryByTestId('product-item')).not.toBeInTheDocument();
@@ -123,10 +124,11 @@ describe('Home Page', () => {
 
   it('adiciona item ao carrinho', async () => {
     api.get.mockResolvedValueOnce({
-      data: { dados: [{ id: 1, nome: 'Mouse' }] },
+      data: [{ id: 1, nome: 'Mouse' }],
     });
 
     renderHome();
+
     await waitFor(() => screen.getByText('Mouse'));
 
     await userEvent.click(screen.getByText('add'));
@@ -137,9 +139,11 @@ describe('Home Page', () => {
   it('incrementa quantidade quando item já existe', async () => {
     getFromStorage.mockReturnValue([{ id: 1, nome: 'Mouse', quantidade: 1 }]);
 
-    api.get.mockResolvedValueOnce({ data: { dados: [] } });
+    api.get.mockResolvedValueOnce({ data: [] });
 
     renderHome();
+    await waitFor(() => {});
+
     await userEvent.click(screen.getByText('add'));
 
     expect(saveToStorage).toHaveBeenCalled();
@@ -147,9 +151,11 @@ describe('Home Page', () => {
 
   it('remove item do carrinho', async () => {
     getFromStorage.mockReturnValue([{ id: 1, nome: 'Mouse', quantidade: 2 }]);
-    api.get.mockResolvedValueOnce({ data: { dados: [] } });
+    api.get.mockResolvedValueOnce({ data: [] });
 
     renderHome();
+    await waitFor(() => {});
+
     await userEvent.click(screen.getByText('remove'));
 
     expect(saveToStorage).toHaveBeenCalled();
@@ -157,7 +163,7 @@ describe('Home Page', () => {
 
   it('exibe carrinho se houver itens', async () => {
     getFromStorage.mockReturnValue([{ id: 1, nome: 'Mouse', quantidade: 1 }]);
-    api.get.mockResolvedValueOnce({ data: { dados: [] } });
+    api.get.mockResolvedValueOnce({ data: [] });
 
     renderHome();
 
@@ -166,7 +172,7 @@ describe('Home Page', () => {
 
   it('oculta carrinho se estiver vazio', async () => {
     getFromStorage.mockReturnValue([]);
-    api.get.mockResolvedValueOnce({ data: { dados: [] } });
+    api.get.mockResolvedValueOnce({ data: [] });
 
     renderHome();
 
@@ -175,7 +181,7 @@ describe('Home Page', () => {
 
   it('navega para detalhes ao clicar em details', async () => {
     api.get.mockResolvedValueOnce({
-      data: { dados: [{ id: 10, nome: 'Notebook' }] },
+      data: [{ id: 10, nome: 'Notebook' }],
     });
 
     renderHome();
@@ -186,15 +192,42 @@ describe('Home Page', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/product/10');
   });
 
-  it('handleLogoClick recarrega produtos e navega', async () => {
-    api.get.mockResolvedValue({ data: { dados: [] } });
+  it('restaura lista original quando o campo de busca é limpo', async () => {
+    api.get.mockResolvedValueOnce({
+      data: [
+        { id: 1, nome: 'Mouse' },
+        { id: 2, nome: 'Teclado' },
+      ],
+    });
+
+    renderHome();
+    await waitFor(() =>
+      expect(screen.getAllByTestId('product-item')).toHaveLength(2)
+    );
+
+    const input = screen.getByRole('textbox');
+    await userEvent.type(input, 'mouse');
+
+    await waitFor(() =>
+      expect(screen.getAllByTestId('product-item')).toHaveLength(1)
+    );
+
+    await userEvent.clear(input);
+
+    await waitFor(() =>
+      expect(screen.getAllByTestId('product-item')).toHaveLength(2)
+    );
+  });
+
+  it('exibe nenhum produto quando API falha', async () => {
+    api.get.mockRejectedValueOnce(new Error('API error'));
 
     renderHome();
 
-    const logo = screen.getByAltText('logo');
-    await userEvent.click(logo);
+    await waitFor(() => {
+      expect(api.get).toHaveBeenCalledTimes(1);
+    });
 
-    expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
-    expect(api.get).toHaveBeenCalledTimes(2);
+    expect(screen.queryByTestId('product-item')).not.toBeInTheDocument();
   });
 });

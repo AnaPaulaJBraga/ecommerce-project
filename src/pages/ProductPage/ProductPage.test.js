@@ -7,6 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 jest.mock('./../../api');
 
+// Mock do navigate e params
 const mockNavigate = jest.fn();
 
 jest.mock('react-router-dom', () => ({
@@ -15,10 +16,22 @@ jest.mock('react-router-dom', () => ({
   useParams: () => ({ id: '101' }),
 }));
 
+// Mock do Header para permitir clique no logo
+jest.mock('../../components/Header/Header', () => {
+  return function MockHeader({ onLogoClick }) {
+    return (
+      <header data-testid="header">
+        <img src="logo.png" alt="logo" onClick={onLogoClick} />
+      </header>
+    );
+  };
+});
+
 describe('ProductPage - Info World', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
   beforeAll(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
   });
@@ -32,7 +45,7 @@ describe('ProductPage - Info World', () => {
       data: {
         nome: 'Notebook Gamer ASUS TUF',
         descricao: 'Alto desempenho para jogos e trabalho.',
-        preco: 'R$ 6.500,00',
+        preco: '6500.00',
         url_foto: '/notebook-asus.jpg',
       },
     });
@@ -43,22 +56,20 @@ describe('ProductPage - Info World', () => {
       </MemoryRouter>
     );
 
-    // Verifica se o loading aparece primeiro
+    // Loading aparece
     expect(screen.getByText(/Carregando/i)).toBeInTheDocument();
 
+    // Produto carregou
     await waitFor(() =>
       expect(screen.getByText(/Notebook Gamer ASUS TUF/i)).toBeInTheDocument()
     );
 
     expect(screen.getByText(/Alto desempenho/i)).toBeInTheDocument();
-    expect(screen.getByText(/R\$ 6\.500,00/i)).toBeInTheDocument();
+    expect(screen.getByText(/R\$ 6500\.00/i)).toBeInTheDocument();
 
-    // Seleciona a imagem correta entre todas
-    const images = screen.getAllByRole('img');
-    const productImage = images.find(
-      (img) => img.getAttribute('alt') === 'Notebook Gamer ASUS TUF'
-    );
-    expect(productImage).toHaveAttribute('src', '/notebook-asus.jpg');
+    // Verifica imagem do produto
+    const img = screen.getByAltText('Notebook Gamer ASUS TUF');
+    expect(img).toHaveAttribute('src', '/notebook-asus.jpg');
   });
 
   it('exibe mensagem de erro quando a API falha', async () => {
@@ -71,16 +82,18 @@ describe('ProductPage - Info World', () => {
     );
 
     await waitFor(() =>
-      expect(screen.getByText(/Erro ao buscar produto/i)).toBeInTheDocument()
+      expect(
+        screen.getByText(/Não foi possível carregar o produto/i)
+      ).toBeInTheDocument()
     );
   });
 
-  it('navega para a home ao clicar em "Voltar"', async () => {
+  it('navega para a página anterior ao clicar em "Voltar"', async () => {
     api.get.mockResolvedValueOnce({
       data: {
         nome: 'Mouse Gamer Redragon Cobra',
         descricao: 'Alta precisão e iluminação RGB.',
-        preco: 'R$ 220,00',
+        preco: '220.00',
         url_foto: '/mouse-redragon.jpg',
       },
     });
@@ -97,11 +110,11 @@ describe('ProductPage - Info World', () => {
       ).toBeInTheDocument()
     );
 
-    userEvent.click(screen.getByRole('button', { name: /Voltar/i }));
+    const backButton = screen.getByRole('button', { name: /Voltar/i });
 
-    await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/');
-    });
+    await userEvent.click(backButton);
+
+    expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 
   it('navega para a home ao clicar no logo do header', async () => {
@@ -109,7 +122,7 @@ describe('ProductPage - Info World', () => {
       data: {
         nome: 'Teclado Mecânico Logitech',
         descricao: 'Switches mecânicos e iluminação RGB.',
-        preco: 'R$ 550,00',
+        preco: '550.00',
         url_foto: '/teclado-logitech.jpg',
       },
     });
@@ -124,13 +137,10 @@ describe('ProductPage - Info World', () => {
       expect(screen.getByText(/Teclado Mecânico Logitech/i)).toBeInTheDocument()
     );
 
-    // Clica no logo (primeira imagem do header)
-    const images = screen.getAllByRole('img');
-    const logo = images.find((img) => img.getAttribute('alt') === 'logo');
-    userEvent.click(logo);
+    const logo = screen.getByAltText('logo');
 
-    await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
-    });
+    await userEvent.click(logo);
+
+    expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
   });
 });

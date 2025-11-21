@@ -11,7 +11,7 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js',
   },
   transformIgnorePatterns: ['/node_modules/(?!axios|react-router-dom)/'],
-  testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
+  testMatch: ['**/?(*.)+(test).[jt]s?(x)'],
   collectCoverageFrom: [
     'src/components/**/*.{js,jsx}',
     'src/pages/**/*.{js,jsx}',

@@ -17,6 +17,8 @@
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
     "build": "react-scripts build",
     "test": "jest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:debug": "playwright test --debug",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{js,jsx}"
   },
